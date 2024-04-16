@@ -36,4 +36,3 @@ app.listen(8200, () => {
     console.log("app is runnning on port " + 8200)
 })
 
-module.exports.handler= serverless(app);

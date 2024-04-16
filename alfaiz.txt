@@ -1,0 +1,126 @@
+1. npm init
+2.npm install express mongoose morgan helmet dotenv nodemon
+3. index.js
+4. add script  "scripts": {
+    "start":"node index.js",
+    "dev":"nodemon index.js",
+}
+
+5.const express=require("express")
+const app=express();
+
+
+app.listen(8200,()=>{
+    console.log("app is runnning on port 8200"+8200)
+})
+
+6.dotenv.config(); //sabko daal skte hai url (.env)
+
+7. database access user username password for url
+QZg7DLR6xOsS6Ek3
+alfaizmalwa567
+
+
+mongoose.connect(process.env.MONGO_URL).then(() => {
+    console.log("mongodb Database Connect connected")
+})
+
+8. AB ROUTER SETUP KRENGE
+
+const router=require("express").Router()
+
+app.get("/",(req,res)=>{
+    res.send("hello User Router");
+})
+
+module.exports=router
+
+//index Me -> app.use("/SocialApp/api/user",userRouter)
+
+
+9.Modal Banega ab 
+
+const mongoose=require("mongoose")
+
+//schema defind mongoose se MODAL
+
+const userSchema=new mongoose.Schema({
+    //key value pair
+
+    emailId:{
+        type:String,
+        max:50,
+        required:true,
+        unique:true
+    },
+    mobile:{
+        type:String,
+        max:10,
+        required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        max:50,
+        required:true,
+    },
+    profilePic:{
+        type:String,
+        defult:""
+    },
+    following:{
+        type:Array,
+        defult:[]
+    }
+},{timestamps:true})
+
+
+
+module.exports = mongoose.model("User",userSchema)
+
+10. ROUTE
+
+const router = require("express").Router()
+
+const User = require("../models/user")
+//register
+
+router.post("/register", async (req, res) => {
+    const newUser = new User({
+        username: req.body.username,
+        emailId: req.body.emailId,
+        mobile: req.body.mobile,
+        password: req.body.password,
+        gender: req.body.gender
+    })
+
+    try {
+        await newUser.save()
+        res.status(200).json(newUser)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
+module.exports = router
+
+11. USE ROUTER IN INDEX JS 
+
+app.use("/SocialApp/api/user", userRouter)
+
+
+
+npm install bcrypt
+
+
+
+const Salt = await bcrypt.genSalt(10);
+        const hashpassword=await bcrypt.hash(req.body.password,Salt)
+
+ddcrypt
+
+
+ const validPassword = await bcrypt.compare(req.body.password,user.password)  //dcrypt
+            
+            if(validPassword){
+            res.status(200).json({status:true,message:"User FOund",json:user})

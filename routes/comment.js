@@ -43,7 +43,7 @@ router.delete("/delete/:id", async (req, res) => {
 
 router.get("/get/:id", async (req, res) => {
     try {
-        const user = await Comment.find({ userId: req.params.id })
+        const user = await Comment.find({ postId: req.params.id })
         if (user) {
             res.status(200).json({ status: true, message: "Post Found Succesfully", data: user })
         }

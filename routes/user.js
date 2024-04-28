@@ -75,7 +75,6 @@ router.get("/get/:id", async (req, res) => {
 
 router.put("/follow/:id", async (req, res) => {
     try {
-        const samnewalasuer = await User.findOne({ _id: req.params.id })
         const khudka = await User.findOne({ _id: req.body.userId })
 
         let isfollow = false

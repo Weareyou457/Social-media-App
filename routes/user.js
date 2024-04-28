@@ -75,22 +75,23 @@ router.get("/get/:id", async (req, res) => {
 
 router.put("/follow/:id", async (req, res) => {
     try {
-        const khudka = await User.findOne({ _id: req.body.userId })
+        const samnewalasuer = await User.findOne({ _id: req.params.id })
+        // const khudka = await User.findOne({ _id: req.body.userId })
 
         let isfollow = false
-        khudka.follower.map(item => {
-            if (item == req.body.userId) {
+        samnewalasuer.following.map(item => {
+            if (item == req.paramas.id) {
                 isfollow = true;
             }
         })
 
-        if (isfollow) {
+        if (isfollow == true) {
             const res1 = await User.findByIdAndUpdate({ _id: req.params.id }, { $pull: { follower: req.body.userId } })
             const res2 = await User.findByIdAndUpdate({ _id: req.body.userId }, { $pull: { following: req.params.id } })
 
             res.status(200).json({ staus: true, message: "You UnFollow This User Now" })
         }
-        else {
+        if(isfollow == false) {
             const res1 = await User.findByIdAndUpdate({ _id: req.params.id }, { $push: { follower: req.body.userId } })
             const res2 = await User.findByIdAndUpdate({ _id: req.body.userId }, { $push: { following: req.params.id } })
 

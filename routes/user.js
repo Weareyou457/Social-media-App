@@ -86,7 +86,10 @@ router.put("/follow/:id", async (req, res) => {
         })
 
         if (isfollow) {
-            res.status(200).json({ staus: false, message: "You Already Following This User" })
+            const res1 = await User.findByIdAndUpdate({ _id: req.params.id }, { $pull: { follower: req.body.userId } })
+            const res2 = await User.findByIdAndUpdate({ _id: req.body.userId }, { $pull: { following: req.params.id } })
+
+            res.status(200).json({ staus: true, message: "You UnFollow This User Now" })
         }
         else {
             const res1 = await User.findByIdAndUpdate({ _id: req.params.id }, { $push: { follower: req.body.userId } })
@@ -100,30 +103,5 @@ router.put("/follow/:id", async (req, res) => {
 })
 
 
-// Not FOllow
-router.put("/unfollow/:id", async (req, res) => {
-    try {
-        const samnewalasuer = await User.findOne({ _id: req.params.id })
-        const khudka = await User.findOne({ _id: req.body.userId })
 
-        let isfollow = false
-        khudka.follower.map(item => {
-            if (item == req.body.userId) {
-                isfollow = true;
-            }
-        })
-
-        if (isfollow) {
-            res.status(200).json({ staus: false, message: "You Not Following This User" })
-        }
-        else {
-            const res1 = await User.findByIdAndUpdate({ _id: req.params.id }, { $pull: { follower: req.body.userId } })
-            const res2 = await User.findByIdAndUpdate({ _id: req.body.userId }, { $pull: { following: req.params.id } })
-
-            res.status(200).json({ staus: true, message: "You UnFollow This User Now" })
-        }
-    } catch (error) {
-        res.status(200).json({ staus: false, message: "You not Following This User", erroro: error })
-    }
-})
 module.exports = router
